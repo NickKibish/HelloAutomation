@@ -18,9 +18,12 @@ jobs:
         - uses: actions/checkout@v2
         - name: Last Tag
           run: echo ${{ env.LAST_TAG }}
-        - name: Get Last Tag Message
-          id: get_last_tag_message
-          run: |
-            TAG_MESSAGE=$(git show -s --format=%s ${{ env.LAST_TAG }})
-            echo "Last Tag Message: $TAG_MESSAGE"
-            echo "::set-output name=tag_message::$TAG_MESSAGE"
+        - name: Last Message
+          run: echo ${{ env.TAG_MESSAGE }}
+
+        # - name: Get Last Tag Message
+        #   id: get_last_tag_message
+        #   run: |
+        #     TAG_MESSAGE=$(git show -s --format=%s ${{ env.LAST_TAG }})
+        #     echo "Last Tag Message: $TAG_MESSAGE"
+        #     echo "::set-output name=tag_message::$TAG_MESSAGE"
