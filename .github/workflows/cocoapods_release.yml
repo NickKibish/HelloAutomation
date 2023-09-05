@@ -27,3 +27,5 @@ jobs:
             echo ${{ steps.vars.outputs.tag }}
         - name: Last Tag
           run: echo ${{ env.LAST_TAG }}
+        - name: Last Tag Message
+          run: echo ${{ env.LAST_TAG_MESSAGE }}
