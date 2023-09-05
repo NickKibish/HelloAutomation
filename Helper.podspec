@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name      = "Helper"
-    s.version   = "0.0.1"
-    s.summary   = "Addition to HelloAutomation pod"
+    s.version   = ENV['LIB_VERSION']
+    s.summary   = "Helper is a dummy pod for testing automation"
     s.homepage  = "https://github.com/NickKibish/HelloAutomation"
     s.license   = { :type => "MIT", :file => "LICENSE" }
     s.author    = { "Nick Kibish" => "nick.kibish@gmail.com" }

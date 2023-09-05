@@ -1,48 +1,58 @@
 name: Create Release
 
 on:
-  push:
-    tags:
-      - '*.*.*'
+    push:
+        tags:
+            - '*.*.*'
 
 env:
-  LAST_TAG_NAME: ""
-  LAST_TAG_MESSAGE: ""
+    LAST_TAG_NAME: ""
+    LAST_TAG_MESSAGE: ""
 
 jobs:
-  get_tag_info:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Get last tag name
-      run: echo "LAST_TAG_NAME=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
-    - name: Get last tag message
-      run: echo "LAST_TAG_MESSAGE=$(git tag -l --format='%(contents:subject)' ${{ env.LAST_TAG_NAME }})" >> $GITHUB_ENV
-    outputs:
-      tag_name: ${{ env.LAST_TAG_NAME }}
-      tag_message: ${{ env.LAST_TAG_MESSAGE }}
+    get_tag_info:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Get last tag name
+          run: echo "LAST_TAG_NAME=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+        - name: Get last tag message
+          run: echo "LAST_TAG_MESSAGE=$(git tag -l --format='%(contents:subject)' ${{ env.LAST_TAG_NAME }})" >> $GITHUB_ENV
+        outputs:
+            tag_name: ${{ env.LAST_TAG_NAME }}
+            tag_message: ${{ env.LAST_TAG_MESSAGE }}
 
-  print_previous_output:
-    runs-on: ubuntu-latest
-    needs: get_tag_info
-    steps:
-    - name: Print previous output
-      run: |
-        echo "Tag name: ${{ needs.get_tag_info.outputs.tag_name }}"
-        echo "Tag message: ${{ needs.get_tag_info.outputs.tag_message }}"
+    check_pods:
+        needs: get_tag_info
+        runs-on: macos-latest
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Setup Ruby
+          uses: ruby/setup-ruby@v1
+          with: 
+            ruby-version: 2.6
+        - name: Install CocoaPods
+          run: gem install cocoapods
+        - name: Pod Lint
+          run: pod lib lint Helper.podspec --allow-warnings
+          env:
+            LIB_VERSION: ${{ needs.get_tag_info.outputs.tag_name }}
 
-  create_release:
-    permissions:
-      contents: write
-    needs: get_tag_info
-    runs-on: ubuntu-latest
-    steps:
-    - name: Create Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ needs.get_tag_info.outputs.tag_name }}
-        release_name: Release ${{ needs.get_tag_info.outputs.tag_name }}
-        body: ${{ needs.get_tag_info.outputs.tag_message }}
+    create_release:
+        permissions:
+            contents: write
+        needs: get_tag_info
+        runs-on: ubuntu-latest
+        steps:
+        - name: Create Release
+          uses: actions/create-release@v1
+          env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+                tag_name: ${{ needs.get_tag_info.outputs.tag_name }}
+                release_name: Release ${{ needs.get_tag_info.outputs.tag_name }}
+                body: ${{ needs.get_tag_info.outputs.tag_message }}
+
+

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name      = "HelloAutomation"
-    s.version   = "0.0.1"
+    s.version   = ENV['LIB_VERSION']
     s.summary   = "HelloAutomation is a dummy pod for testing automation"
     s.homepage  = "https://github.com/NickKibish/HelloAutomation"
     s.license   = { :type => "MIT", :file => "LICENSE" }
