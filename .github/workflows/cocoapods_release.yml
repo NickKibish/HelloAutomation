@@ -9,6 +9,7 @@ on:
     workflow_dispatch:
 env:
   LAST_TAG: ${GITHUB_REF#refs/*/}
+  LAST_TAG_MESSAGE: ${git tag -l --format='%(contents:subject)' $LAST_TAG}
 
 jobs:
     test:
