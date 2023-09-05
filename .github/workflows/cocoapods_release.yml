@@ -32,15 +32,15 @@ jobs:
         echo "Tag name: ${{ needs.get_tag_info.outputs.tag_name }}"
         echo "Tag message: ${{ needs.get_tag_info.outputs.tag_message }}"
 
-#   create_release:
-#     needs: get_tag_info
-#     runs-on: ubuntu-latest
-#     steps:
-#     - name: Create Release
-#       uses: actions/create-release@v1
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       with:
-#         tag_name: ${{ needs.get_tag_info.outputs.tag_name }}
-#         release_name: Release ${{ needs.get_tag_info.outputs.tag_name }}
-#         body: ${{ needs.get_tag_info.outputs.tag_message }}
+  create_release:
+    needs: get_tag_info
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ needs.get_tag_info.outputs.tag_name }}
+        release_name: Release ${{ needs.get_tag_info.outputs.tag_name }}
+        body: ${{ needs.get_tag_info.outputs.tag_message }}
