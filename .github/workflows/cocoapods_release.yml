@@ -9,7 +9,6 @@ on:
     workflow_dispatch:
 env:
   LAST_TAG: ${GITHUB_REF#refs/*/}
-  LAST_TAG_MESSAGE: ${git tag -l --format='%(contents:subject)' $LAST_TAG}
 
 jobs:
     test:
@@ -27,5 +26,9 @@ jobs:
             echo ${{ steps.vars.outputs.tag }}
         - name: Last Tag
           run: echo ${{ env.LAST_TAG }}
-        - name: Last Tag Message
-          run: echo ${{ env.LAST_TAG_MESSAGE }}
+        - name: Get Last Tag Message
+          id: get_last_tag_message
+          run: |
+            TAG_MESSAGE=$(git show -s --format=%s ${{ env.LAST_TAG }})
+            echo "Last Tag Message: $TAG_MESSAGE"
+            echo "::set-output name=tag_message::$TAG_MESSAGE"
