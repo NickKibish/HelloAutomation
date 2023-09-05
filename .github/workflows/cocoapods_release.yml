@@ -9,21 +9,13 @@ on:
     workflow_dispatch:
 env:
   LAST_TAG: ${GITHUB_REF#refs/*/}
+  TAG_MESSAGE: ${git show -s --format=%s ${ env.LAST_TAG }}
 
 jobs:
     test:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
-        - name: Set output
-          id: vars
-          run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
-        - name: Check output
-          env:
-            RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-          run: |
-            echo $RELEASE_VERSION
-            echo ${{ steps.vars.outputs.tag }}
         - name: Last Tag
           run: echo ${{ env.LAST_TAG }}
         - name: Get Last Tag Message
