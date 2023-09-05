@@ -8,6 +8,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,7 +18,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build
-      run: swift build -v
+
+    - name: Setup Swift
+      uses: swift-actions/setup-swift@v1
+      with:
+        swift-version: '5.8'
+
+    - name: Build Helper
+      run: swift build --target Helper -v
+    - name: Build HelloAutomation
+      run: swift build --target HelloAutomation -v
     - name: Run tests
       run: swift test -v
