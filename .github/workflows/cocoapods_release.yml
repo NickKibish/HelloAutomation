@@ -33,6 +33,8 @@ jobs:
         echo "Tag message: ${{ needs.get_tag_info.outputs.tag_message }}"
 
   create_release:
+    permissions:
+      contents: write
     needs: get_tag_info
     runs-on: ubuntu-latest
     steps:
