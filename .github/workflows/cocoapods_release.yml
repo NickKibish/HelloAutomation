@@ -9,7 +9,7 @@ on:
     workflow_dispatch:
 env:
   LAST_TAG: ${GITHUB_REF#refs/*/}
-  TAG_MESSAGE: ${git show -s --format=%s ${ env.LAST_TAG }}
+  LAST_TAG_MSG: ${git show -s --format=%s ${ env.LAST_TAG }}
 
 jobs:
     test:
@@ -18,12 +18,8 @@ jobs:
         - uses: actions/checkout@v2
         - name: Last Tag
           run: echo ${{ env.LAST_TAG }}
-        - name: Last Message
-          run: echo ${{ env.TAG_MESSAGE }}
-
-        # - name: Get Last Tag Message
-        #   id: get_last_tag_message
-        #   run: |
-        #     TAG_MESSAGE=$(git show -s --format=%s ${{ env.LAST_TAG }})
-        #     echo "Last Tag Message: $TAG_MESSAGE"
-        #     echo "::set-output name=tag_message::$TAG_MESSAGE"
+        - name: Get Last Tag Message
+          run: |
+            env.LAST_TAG_MSG=$(git show -s --format=%s ${{ env.LAST_TAG }})
+        - name: Print Message
+          run: echo ${{ env.LAST_TAG_MSG }}
