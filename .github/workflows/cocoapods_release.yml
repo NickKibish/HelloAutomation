@@ -7,6 +7,8 @@ on:
       tags:
         - '*.*.*'
     workflow_dispatch:
+env:
+  LAST_TAG: ${{ github.event.inputs.tag }}
 
 jobs:
     test:
@@ -22,3 +24,5 @@ jobs:
           run: |
             echo $RELEASE_VERSION
             echo ${{ steps.vars.outputs.tag }}
+        - name: Last Tag
+          run: echo ${{ env.LAST_TAG }}
