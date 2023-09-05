@@ -32,6 +32,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ needs.get_tag_info.outputs.tag_name }}
-        release_name: Release ${{ needs.get_tag_info.outputs.tag_name }}
-        body: ${{ needs.get_tag_info.outputs.tag_message }}
+        tag_name: ${{ env.LAST_TAG_NAME }}
+        release_name: Release ${{ env.LAST_TAG_MESSAGE }}
+        body: ${{ env.LAST_TAG_MESSAGE }}
