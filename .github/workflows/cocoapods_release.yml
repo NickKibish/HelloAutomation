@@ -53,7 +53,6 @@ jobs:
           run: gem install cocoapods
         - name: Deploy HelloAutomation.podspec to Cocoapods
           run: |
-            set -eo pipefail
             pod lib lint HelloAutomation.podspec --allow-warnings
             pod trunk push HelloAutomation.podspec --allow-warnings
           env:
@@ -61,9 +60,8 @@ jobs:
             LIB_VERSION: ${{ needs.get_tag_info.outputs.tag_name }}
         - name: Deploy .podspec to Cocoapods
           run: |
-            set -eo pipefail
-            pod lib lint Helper.podspec --allow-warnings
-            pod trunk push Helper.podspec --allow-warnings
+            pod lib lint Hello-Automation-Helper.podspec --allow-warnings
+            pod trunk push Hello-Automation-Helper.podspec --allow-warnings
           env:
             COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
             LIB_VERSION: ${{ needs.get_tag_info.outputs.tag_name }}
