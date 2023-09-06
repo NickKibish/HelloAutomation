@@ -23,8 +23,20 @@ jobs:
             tag_name: ${{ env.LAST_TAG_NAME }}
             tag_message: ${{ env.LAST_TAG_MESSAGE }}
 
+    build_and_test:
+        runs-on: macos-latest
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Build Hello Automation
+          run: swift build --target HelloAutomation
+        - name: Build Helper
+          run: swift build --target Helper
+        - name: Test 
+          run: swift test
+
     deploy_to_cocoapods:
-        needs: get_tag_info
+        needs: [get_tag_info, build_and_test]
         runs-on: macos-latest
         steps:
         - name: Checkout code

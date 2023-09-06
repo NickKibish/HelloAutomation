@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-    s.name      = "Helper"
+    s.name      = "Hello-Automation-Helper"
     s.version   = ENV['LIB_VERSION']
     s.summary   = "Helper is a dummy pod for testing automation"
     s.homepage  = "https://github.com/NickKibish/HelloAutomation"
