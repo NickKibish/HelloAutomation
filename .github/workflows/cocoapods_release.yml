@@ -35,10 +35,21 @@ jobs:
             ruby-version: 2.7
         - name: Install CocoaPods
           run: gem install cocoapods
-        - name: Pod Lint
-          run: pod lib lint Helper.podspec --allow-warnings
+        - name: Deploy HelloAutomation.podspec to Cocoapods
+          run: |
+            set -eo pipefail
+            pod lib lint HelloAutomation.podspec --allow-warnings
+            pod trunk push HelloAutomation.podspec --allow-warnings
           env:
-            LIB_VERSION: ${{ needs.get_tag_info.outputs.tag_name }}
+            COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        - name: Deploy .podspec to Cocoapods
+          run: |
+            set -eo pipefail
+            pod lib lint Helper.podspec --allow-warnings
+            pod trunk push Helper.podspec --allow-warnings
+          env:
+            COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+
 
     create_release:
         permissions:
