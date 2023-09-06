@@ -23,7 +23,7 @@ jobs:
             tag_name: ${{ env.LAST_TAG_NAME }}
             tag_message: ${{ env.LAST_TAG_MESSAGE }}
 
-    check_pods:
+    deploy_to_cocoapods:
         needs: get_tag_info
         runs-on: macos-latest
         steps:
@@ -42,6 +42,7 @@ jobs:
             pod trunk push HelloAutomation.podspec --allow-warnings
           env:
             COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+            LIB_VERSION: ${{ needs.get_tag_info.outputs.tag_name }}
         - name: Deploy .podspec to Cocoapods
           run: |
             set -eo pipefail
@@ -49,12 +50,12 @@ jobs:
             pod trunk push Helper.podspec --allow-warnings
           env:
             COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-
+            LIB_VERSION: ${{ needs.get_tag_info.outputs.tag_name }}
 
     create_release:
         permissions:
             contents: write
-        needs: get_tag_info
+        needs: [get_tag_info, deploy_to_cocoapods]
         runs-on: ubuntu-latest
         steps:
         - name: Create Release
