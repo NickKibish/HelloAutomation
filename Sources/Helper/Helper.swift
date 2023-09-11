@@ -14,4 +14,9 @@ public struct Helper {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: date)
     }
+
+    public func ping() async -> String {
+        try? await Task.sleep(nanoseconds: 1_500_000_000)
+        return "pong"
+    }
 }

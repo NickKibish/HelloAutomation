@@ -18,6 +18,17 @@ final class HelperTests: XCTestCase {
 
         let date = dateComponents.date!
         XCTAssertEqual(helper.now(date), "2021-10-13 15:00:00")
+    }
 
+    func testPingPong() async throws {
+        let helper = Helper()
+        let expectation = expectation(description: "ping")
+        Task {
+            let pong = await helper.ping()
+            XCTAssertEqual(pong, "pong")
+            expectation.fulfill()
+        }
+
+        await fulfillment(of: [expectation], timeout: 2)
     }
 }
