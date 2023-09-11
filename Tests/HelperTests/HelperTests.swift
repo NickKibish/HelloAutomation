@@ -29,6 +29,7 @@ final class HelperTests: XCTestCase {
             expectation.fulfill()
         }
         
-        await self.fulfillment(of: [expectation], timeout: 2, enforceOrder: false)
+//        await self.fulfillment(of: [expectation], timeout: 2, enforceOrder: false)
+        wait(for: [expectation], timeout: 2)
     }
 }
