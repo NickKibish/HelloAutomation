@@ -1,0 +1,20 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: Build and Test
+
+on:
+  push:
+    tags: "*.*.*"
+
+jobs:
+  tag_info:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Get tag info
+      id: tag_info
+      run: |
+        echo ::set-output name=tag::$(echo ${GITHUB_REF#refs/tags/})
