@@ -9,7 +9,7 @@ on:
 
 jobs:
   tag_info:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     outputs:
       tag_name: ${{ steps.get_tag_name.outputs.tag_name }}
       tag_message: ${{ steps.get_tag_message.outputs.tag_message }}
