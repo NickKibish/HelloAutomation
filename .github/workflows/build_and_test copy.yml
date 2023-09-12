@@ -9,12 +9,21 @@ on:
 
 jobs:
   tag_info:
-
     runs-on: ubuntu-latest
-
+    outputs:
+      tag_name: ${{ steps.get_tag_name.outputs.tag_name }}
+      tag_message: ${{ steps.get_tag_message.outputs.tag_message }}
     steps:
-    - uses: actions/checkout@v4
-    - name: Get tag info
-      id: tag_info
-      run: |
-        echo ::set-output name=tag::$(echo ${GITHUB_REF#refs/tags/})
+      - uses: actions/checkout@v4
+      - name: Get last tag name
+        id: get_tag_name
+        run: |
+          echo "tag_name=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+      - name: Get tag info
+        id: get_tag_message
+        run: |
+          echo "tag_message=$(git tag -l {{  steps.get_tag_name.outputs.tag_name }} --format '%(contents)') >> $GITHUB_OUTPUT
+      - name: Print Outputs
+        run: |
+          echo "Tag Name: ${{ steps.get_tag_name.outputs.tag_name }}"
+          echo "Tag Message: ${{ steps.get_tag_message.outputs.tag_message }}"
