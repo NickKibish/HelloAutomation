@@ -24,7 +24,9 @@ jobs:
         fetch-depth: 0
     - name: Initial Log
       run: |
+        echo "latest tag:"
         git describe --abbrev=0
+        echo "all tags:"
         git tag 
     - name: Get last tag name
       id: get_tag_name
