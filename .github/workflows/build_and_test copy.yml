@@ -22,9 +22,12 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - name: Get last tag name{
+    - name: Get last tag name
       id: get_tag_name
       run: echo "tag_name=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT}
+    - name: Print tag name
+      run: |
+        echo "Tag Name: ${{ steps.get_tag_name.outputs.tag_name }}"
     - name: Get tag message
       id: get_tag_message
       run: |
