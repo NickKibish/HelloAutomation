@@ -24,7 +24,10 @@ jobs:
         fetch-depth: 0
     - name: Get last tag name
       id: get_tag_name
-      run: echo "tag_name=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT}
+      run: |
+        tn=git describe --tags --abbrev=0
+        echo "Tag Name: $tn"
+        echo "tag_name=$tn" >> $GITHUB_OUTPUT
     - name: Print tag name
       run: |
         echo "Tag Name: ${{ steps.get_tag_name.outputs.tag_name }}"
