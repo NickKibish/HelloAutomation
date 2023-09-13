@@ -9,21 +9,32 @@ on:
 
 jobs:
   tag_info:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     outputs:
-      tag_name: ${{ steps.get_tag_name.outputs.tag_name }}
+      tag_name: ${{ steps.get_tag_name.outputs.tag_name }}  }}
       tag_message: ${{ steps.get_tag_message.outputs.tag_message }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Get last tag name
-        id: get_tag_name
-        run: |
-          echo "tag_name=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
-      - name: Get tag info
-        id: get_tag_message
-        run: |
-          echo "tag_message=$(git tag -l {{  steps.get_tag_name.outputs.tag_name }} --format '%(contents)') >> $GITHUB_OUTPUT
-      - name: Print Outputs
-        run: |
-          echo "Tag Name: ${{ steps.get_tag_name.outputs.tag_name }}"
-          echo "Tag Message: ${{ steps.get_tag_message.outputs.tag_message }}"
+    - name: Add Git Identity
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Get last tag name{
+      id: get_tag_name
+      run: echo "tag_name=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT}
+    - name: Get tag message
+      id: get_tag_message
+      run: |
+        msg=git tag -l ${{ steps.get_tag_name.outcome.tag_name }} --format '%(contents)')
+        echo "tag_message=$msg" >> $GITHUB_OUTPUT
+    - name: Print tag message
+      run: |
+        echo "Tag Message: $TAG_MESSAGE"
+    - name: Print Outputs
+      run: |
+        echo "Tag Name: ${{ steps.get_tag_name.outputs.tag_name }}"
+        echo "Tag Message: ${{ steps.get_tag_message.outputs.tag_message }}"
+        echo "tag_message=$(git tag -l 0.1.3 --format='%(contents)')"
