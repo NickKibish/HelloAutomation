@@ -31,7 +31,7 @@ jobs:
     - name: Get last tag name
       id: get_tag_name
       run: |
-        tn=git describe --tags --abbrev=0
+        tn=$(git describe --abbrev=0)
         echo "Tag Name: $tn"
         echo "tag_name=$tn" >> $GITHUB_OUTPUT
     - name: Print tag name
